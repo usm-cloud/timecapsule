@@ -1,0 +1,155 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="TimeCapsule in timecapsule-dev-vpc" id="lab3">
+    <mxGraphModel dx="1400" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Groups, drawn outside-in -->
+        <mxCell id="cloud" value="AWS Cloud" style="points=[];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=0;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_aws_cloud_alt;strokeColor=#232F3E;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#232F3E;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="180" y="40" width="1280" height="900" as="geometry" />
+        </mxCell>
+        <mxCell id="region" value="Region eu-central-1 (Frankfurt)" style="points=[];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=0;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_region;strokeColor=#00A4A6;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#147EBA;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="70" width="1240" height="850" as="geometry" />
+        </mxCell>
+        <mxCell id="vpc" value="timecapsule-dev-vpc 10.7.0.0/16" style="points=[];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=0;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_vpc2;strokeColor=#8C4FFF;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#8C4FFF;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="260" y="110" width="860" height="790" as="geometry" />
+        </mxCell>
+        <mxCell id="az-a" value="Availability Zone eu-central-1a" style="fillColor=none;strokeColor=#147EBA;dashed=1;verticalAlign=top;fontStyle=0;fontColor=#147EBA;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="150" width="380" height="610" as="geometry" />
+        </mxCell>
+        <mxCell id="az-b" value="Availability Zone eu-central-1b" style="fillColor=none;strokeColor=#147EBA;dashed=1;verticalAlign=top;fontStyle=0;fontColor=#147EBA;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="720" y="150" width="380" height="610" as="geometry" />
+        </mxCell>
+
+        <!-- Subnets -->
+        <mxCell id="public-a" value="timecapsule-dev-public-a 10.7.0.0/24&lt;br&gt;public-rt: 0.0.0.0/0 → igw" style="points=[];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=0;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_security_group;grStroke=0;strokeColor=#7AA116;fillColor=#F2F6E8;verticalAlign=top;align=left;spacingLeft=30;fontColor=#248814;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="340" y="210" width="340" height="270" as="geometry" />
+        </mxCell>
+        <mxCell id="private-a" value="timecapsule-dev-private-a 10.7.10.0/24&lt;br&gt;private-rt: только local" style="points=[];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=0;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_security_group;grStroke=0;strokeColor=#00A4A6;fillColor=#E6F6F7;verticalAlign=top;align=left;spacingLeft=30;fontColor=#147EBA;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="340" y="520" width="340" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="public-b" value="timecapsule-dev-public-b 10.7.1.0/24&lt;br&gt;public-rt: 0.0.0.0/0 → igw" style="points=[];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=0;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_security_group;grStroke=0;strokeColor=#7AA116;fillColor=#F2F6E8;verticalAlign=top;align=left;spacingLeft=30;fontColor=#248814;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="740" y="210" width="340" height="270" as="geometry" />
+        </mxCell>
+        <mxCell id="private-b" value="timecapsule-dev-private-b 10.7.11.0/24&lt;br&gt;private-rt: только local&lt;br&gt;(пока пустая)" style="points=[];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=0;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_security_group;grStroke=0;strokeColor=#00A4A6;fillColor=#E6F6F7;verticalAlign=top;align=left;spacingLeft=30;fontColor=#147EBA;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="740" y="520" width="340" height="220" as="geometry" />
+        </mxCell>
+
+        <!-- Security Groups -->
+        <mxCell id="web-sg" value="timecapsule-dev-web-sg" style="fillColor=none;strokeColor=#DD3522;verticalAlign=top;fontStyle=0;fontColor=#DD3522;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="360" y="260" width="170" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="db-sg" value="timecapsule-dev-db-sg" style="fillColor=none;strokeColor=#DD3522;verticalAlign=top;fontStyle=0;fontColor=#DD3522;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="360" y="570" width="170" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="bastion-sg" value="timecapsule-dev-bastion-sg" style="fillColor=none;strokeColor=#DD3522;verticalAlign=top;fontStyle=0;fontColor=#DD3522;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="760" y="260" width="170" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- Servers -->
+        <mxCell id="app" value="timecapsule-dev-app&lt;br&gt;EIP timecapsule-dev-app-eip&lt;br&gt;nginx, PHP-FPM" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#ED7100;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.instance2;" vertex="1" parent="1">
+          <mxGeometry x="421" y="300" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="db" value="timecapsule-dev-db&lt;br&gt;PostgreSQL 16, 10.7.10.x" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#ED7100;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.instance2;" vertex="1" parent="1">
+          <mxGeometry x="421" y="610" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="bastion" value="timecapsule-dev-bastion" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#ED7100;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.instance2;" vertex="1" parent="1">
+          <mxGeometry x="821" y="320" width="48" height="48" as="geometry" />
+        </mxCell>
+
+        <!-- Network resources -->
+        <mxCell id="igw" value="timecapsule-dev-igw" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#8C4FFF;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.internet_gateway;" vertex="1" parent="1">
+          <mxGeometry x="236" y="300" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="nat-box" value="временный" style="fillColor=none;strokeColor=#8C4FFF;dashed=1;verticalAlign=top;fontColor=#8C4FFF;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="545" y="300" width="125" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="nat" value="timecapsule-dev-nat-a&lt;br&gt;+ timecapsule-dev-nat-a-eip" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#8C4FFF;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.nat_gateway;opacity=60;" vertex="1" parent="1">
+          <mxGeometry x="583" y="340" width="48" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="r53" value="Route 53 private zone timecapsule.internal&lt;br&gt;A db → 10.7.10.x, TTL 60" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#8C4FFF;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.hosted_zone;" vertex="1" parent="1">
+          <mxGeometry x="676" y="790" width="48" height="48" as="geometry" />
+        </mxCell>
+
+        <!-- Outside AWS -->
+        <mxCell id="users" value="Users" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#232F3D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.users;" vertex="1" parent="1">
+          <mxGeometry x="60" y="200" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="laptop" value="My computer&lt;br&gt;~/.ssh/config" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#232F3D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.client;" vertex="1" parent="1">
+          <mxGeometry x="60" y="400" width="60" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="github" value="GitHub&lt;br&gt;usm-cloud/timecapsule&lt;br&gt;(public)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#24292F;fontColor=#FFFFFF;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="700" width="140" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- User traffic -->
+        <mxCell id="e-users-igw" value="HTTP :80" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeWidth=2;" edge="1" parent="1" source="users" target="igw">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-igw-app" value="HTTP :80" style="html=1;endArrow=block;strokeWidth=2;" edge="1" parent="1" source="igw" target="app">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-app-db" value="PostgreSQL :5432&lt;br&gt;db.timecapsule.internal" style="html=1;endArrow=block;strokeWidth=2;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="app" target="db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-r53-db" value="DNS" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;dashed=1;dashPattern=1 3;" edge="1" parent="1" source="r53" target="db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Admin SSH, always through bastion -->
+        <mxCell id="e-laptop-igw" value="SSH :22" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;dashed=1;" edge="1" parent="1" source="laptop" target="igw">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-igw-bastion" value="SSH :22 (My IP)" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;dashed=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="igw" target="bastion">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="300" y="312" /><mxPoint x="300" y="185" /><mxPoint x="845" y="185" /></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-bastion-app" value="SSH :22" style="html=1;endArrow=block;dashed=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="bastion" target="app">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-bastion-db" value="SSH :22" style="html=1;endArrow=block;dashed=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="bastion" target="db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Code delivery and updates -->
+        <mxCell id="e-laptop-github" value="git push" style="html=1;endArrow=block;dashed=1;" edge="1" parent="1" source="laptop" target="github">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-app-github" value="git pull HTTPS :443" style="html=1;endArrow=block;dashed=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="app" target="github">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-db-nat" value="dnf update&lt;br&gt;(только с NAT)" style="html=1;endArrow=block;dashed=1;strokeColor=#8C4FFF;fontColor=#8C4FFF;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="db" target="nat">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="bucket" value="S3 timecapsule-dev-uploads-semion&lt;br&gt;prefix uploads/&lt;br&gt;versioning, lifecycle, HTTPS only" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#7AA116;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.bucket;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="300" width="60" height="62" as="geometry" />
+        </mxCell>
+        <mxCell id="role" value="timecapsule-dev-app-role&lt;br&gt;policy timecapsule-dev-app-s3" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#DD344C;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.role;" vertex="1" parent="1">
+          <mxGeometry x="425" y="395" width="40" height="23" as="geometry" />
+        </mxCell>
+        <mxCell id="e-app-role" value="" style="html=1;endArrow=none;dashed=1;strokeColor=#DD344C;" edge="1" parent="1" source="app" target="role">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-app-bucket" value="PutObject, DeleteObject&lt;br&gt;HTTPS :443, права роли" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeWidth=2;strokeColor=#7AA116;fontColor=#3F5E0B;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="app" target="bucket">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="445" y="190" />
+              <mxPoint x="1270" y="190" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-users-bucket" value="GET по подписанному URL (302 от приложения, 5 минут)" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;strokeWidth=2;strokeColor=#7AA116;fontColor=#3F5E0B;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="users" target="bucket">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="90" y="20" />
+              <mxPoint x="1420" y="20" />
+              <mxPoint x="1420" y="331" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

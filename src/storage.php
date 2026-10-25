@@ -1,23 +1,28 @@
 <?php
 // File storage for capsule attachments.
 //
-// This is the only file that reads or writes uploaded files. They are kept on the local
-// disk, in UPLOAD_DIR. The rest of the app only uses the three functions
+// This is the only file that reads or writes uploaded files. They are kept in the S3 bucket
+// S3_BUCKET, under the prefix "uploads/". The rest of the app only uses the three functions
 // storage_save(), storage_delete() and storage_stream().
+//
+// There are no access keys in .env: on app-server the SDK takes temporary credentials
+// from the instance role (timecapsule-dev-app-role).
 
-// Absolute path of the upload folder. A relative UPLOAD_DIR is relative to the project root.
-function upload_dir(): string
+function s3(): Aws\S3\S3Client
 {
-    $dir = config('UPLOAD_DIR', 'storage/uploads');
-    // Absolute paths look like "/var/uploads" (Linux, macOS) or "C:\uploads" (Windows).
-    if (!preg_match('#^([A-Za-z]:)?[\\\\/]#', $dir)) {
-        $dir = ROOT_DIR . '/' . $dir;
-    }
+    static $client = null;
+    return $client ??= new Aws\S3\S3Client(['region' => config('AWS_REGION', 'eu-central-1')]);
+}
 
-    if (!is_dir($dir)) {
-        mkdir($dir, 0775, true);
-    }
-    return rtrim($dir, '/\\');
+function s3_bucket(): string
+{
+    return config('S3_BUCKET') ?: throw new RuntimeException('S3_BUCKET is not set in .env.');
+}
+
+// Object key of a stored file. basename() keeps every key under "uploads/".
+function s3_key(string $storedName): string
+{
+    return 'uploads/' . basename($storedName);
 }
 
 // Save an uploaded file ($_FILES['...'] entry) and return its stored name, e.g. "3f9a...e1.png".
@@ -26,46 +31,44 @@ function storage_save(array $uploadedFile, string $extension): string
 {
     $storedName = bin2hex(random_bytes(16)) . '.' . $extension;
 
-    if (!move_uploaded_file($uploadedFile['tmp_name'], upload_dir() . '/' . $storedName)) {
-        throw new RuntimeException('Could not save the uploaded file.');
-    }
+    s3()->putObject([
+        'Bucket' => s3_bucket(),
+        'Key' => s3_key($storedName),
+        'SourceFile' => $uploadedFile['tmp_name'],
+        'ContentType' => mime_content_type($uploadedFile['tmp_name']) ?: 'application/octet-stream',
+    ]);
     return $storedName;
 }
 
+// With versioning on, this adds a delete marker. Old versions are removed by the lifecycle rule.
 function storage_delete(?string $storedName): void
 {
     if ($storedName === null || $storedName === '') {
         return;
     }
 
-    // basename() makes sure we never delete something outside the upload folder.
-    $path = upload_dir() . '/' . basename($storedName);
-    if (is_file($path)) {
-        unlink($path);
-    }
+    s3()->deleteObject(['Bucket' => s3_bucket(), 'Key' => s3_key($storedName)]);
 }
 
-// Send a stored file to the browser.
+// Send the browser to a presigned URL of the file. The browser downloads it from S3 directly.
 // $disposition: "inline" (show in the browser) or "attachment" (download).
 function storage_stream(string $storedName, string $mime, string $downloadName, string $disposition): void
 {
-    $path = upload_dir() . '/' . basename($storedName);
-    if (!is_file($path)) {
-        abort(404);
-    }
-
     // Keep only safe characters for the plain filename; the UTF-8 name goes in filename*.
     $asciiName = preg_replace('/[^A-Za-z0-9._ -]/', '_', $downloadName);
 
-    header('Content-Type: ' . $mime);
-    header('Content-Length: ' . filesize($path));
-    header(sprintf(
-        'Content-Disposition: %s; filename="%s"; filename*=UTF-8\'\'%s',
-        $disposition,
-        $asciiName,
-        rawurlencode($downloadName)
-    ));
-    header('X-Content-Type-Options: nosniff');
+    $command = s3()->getCommand('GetObject', [
+        'Bucket' => s3_bucket(),
+        'Key' => s3_key($storedName),
+        'ResponseContentType' => $mime,
+        'ResponseContentDisposition' => sprintf(
+            '%s; filename="%s"; filename*=UTF-8\'\'%s',
+            $disposition,
+            $asciiName,
+            rawurlencode($downloadName)
+        ),
+    ]);
+    $url = (string) s3()->createPresignedRequest($command, '+5 minutes')->getUri();
 
-    readfile($path);
+    header('Location: ' . $url, true, 302);
 }
